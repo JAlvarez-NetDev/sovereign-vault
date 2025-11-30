@@ -1,0 +1,12 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs y temporales
+*.log
+upload.log
+
+# Configuración sensible (por si acaso)
+config/
+.env
