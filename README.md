@@ -4,6 +4,8 @@
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=Raspberry%20Pi&logoColor=white)
 ![Bash](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
+
+![intro](assets/intro.png)
 # Sovereign-Vault Project
 
 ---
@@ -43,6 +45,11 @@ Create an automated security infrastructure that complies with the **3-2-1** str
     - 📄 [Official Documentation](https://docs.docker.com/engine/install/ubuntu/)
 - **Rclone:** Cloud management tool.
     - 📥 [Official installation script](https://rclone.org/install/)
+
+---
+## FLOW CHART
+
+![diagram](assets/diagram.png)
 
 ---
 
