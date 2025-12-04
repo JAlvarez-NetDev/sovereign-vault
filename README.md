@@ -53,6 +53,15 @@ Create an automated security infrastructure that complies with the **3-2-1** str
 
 ---
 
+> ⚠️ IMPORTANT NOTE ON USERNAMES
+> 
+> 
+> In the following examples, you will see the username **`netmiko`**. This is the specific user for my home lab.
+> 
+> When running these commands on your own system, you **MUST replace `netmiko`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
+> To find out your current username, type `whoami` in the terminal.
+> 
+
 ## 3. Step 1: Server (Raspberry Pi)
 
 ### 3.1. Environment Preparation
