@@ -6,7 +6,6 @@
 ![Bash](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
 # Sovereign-Vault Project
 
-![Project To Diagram](assets/Sovereign-vault.png)
 ---
 
 ## 1. Introduction
@@ -361,6 +360,116 @@ cat /home/youruser/scripts/upload.log
 At the end of the text it should say: **`ESTADO: ÉXITO`**.
 
 ![Success](assets/image17.png)
+
+# 🔐 Data Recovery Protocol (Sovereign Vault)
+
+And of course, to wrap up for now while I imagine potential updates, let's explain how to recover your encrypted data from the Google Drive server.
+
+Don't worry: even if you download the data copy, **the service remains active and everything continues as if nothing happened**... except that you now have your decrypted copy of your data in your possession. :)
+
+I'll be happy to answer any suggestions or comments!
+
+---
+
+> ⚠️ IMPORTANT NOTE ON USERNAMES
+> 
+> 
+> In the following examples, you will see the username **`netmiko`**. This is the specific user for my home lab.
+> 
+> When running these commands on your own system, you **MUST replace `netmiko`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
+> To find out your current username, type `whoami` in the terminal.
+> 
+
+---
+
+## 1. Preparation & Dependencies (Server Side)
+
+### 1.1. Install Critical Dependency (FUSE)
+
+This component is essential on minimal Linux distributions (like Ubuntu Server) to allow Rclone to create a virtual filesystem. **This step prevents the "daemon exited with error code 1" error.**
+
+Bash
+
+```bash
+sudo apt update
+sudo apt install fuse libfuse2 -y
+```
+
+*(Note: On newer Ubuntu versions, you might need `fuse3` instead of `libfuse2`).*
+
+### 1.2. Create Mount Point & Fix Permissions
+
+We create the folder and **transfer ownership to the user** so we can write to it without root privileges.
+
+Bash
+
+```bash
+# 1. Create the folder (as root)
+sudo mkdir -p /mnt/vault_mount
+
+# 2. Give ownership to your user (CRITICAL STEP)
+# Replace 'netmiko' with YOUR username
+sudo chown netmiko:netmiko /mnt/vault_mount
+```
+
+---
+
+## 2. Mounting & Accessing Data
+
+### 2.1. Mount the Encrypted Remote (Live Decryption)
+
+Connect the cloud remote (`gcrypt:`) to the local folder. Decryption happens in real-time using the CPU.
+
+```bash
+rclone mount gcrypt: /mnt/vault_mount --daemon
+```
+
+> 💡 Note: The --daemon flag ensures the process runs in the background, keeping your terminal free for other commands.
+> 
+
+### 2.2. Verify Content
+
+Check that you can see your files in clear text within the virtual folder.
+
+Bash
+
+```bash
+# You should see your folders (Backup_diario, etc.)
+ls -lh /mnt/vault_mount/
+```
+
+### 2.3. Copy to Final Location
+
+The mounted folder is virtual. To actually "recover" the data permanently, copy the files to a standard directory in your user home.
+
+Bash
+
+```bash
+# Create a destination folder in your home
+mkdir -p $HOME/RESTORED_VAULT
+
+# Copy the files recursively
+# (Adjust 'Backup_diario' to match your folder name)
+cp -r /mnt/vault_mount/Backup_diario $HOME/RESTORED_VAULT/
+```
+
+---
+
+## 3. Finalization & Unmounting
+
+### 3.1. Unmount the Remote
+
+It is **mandatory** to disconnect the virtual drive after the copy process to release system resources and maintain security.
+
+Bash
+
+```bash
+fusermount -u /mnt/vault_mount
+```
+
+**Final Result:**
+Your files are now restored, decrypted, and ready to use in the `$HOME/RESTORED_VAULT/` folder. The automated backup service continues to run in the background undisturbed
+
 ## 🔒 Security & Privacy Philosophy
 
 This project adheres to the principle of **Data Sovereignty**.
