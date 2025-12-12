@@ -55,10 +55,7 @@ Create an automated security infrastructure that complies with the **3-2-1** str
 
 > ⚠️ IMPORTANT NOTE ON USERNAMES
 > 
-> 
-> In the following examples, you will see the username **`netmiko`**. This is the specific user for my home lab.
-> 
-> When running these commands on your own system, you **MUST replace `netmiko`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
+> When running these commands on your own system, you **MUST replace `youruser`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
 > To find out your current username, type `whoami` in the terminal.
 > 
 
@@ -71,15 +68,15 @@ We connect via SSH to our Raspberry Pi.
 Commands executed in the SSH terminal to create the folder structure and assign permissions.
 
 ```bash
-mkdir -p /home/netmiko/docker/syncthing
-mkdir -p /home/netmiko/Backups
-mkdir -p /home/netmiko/scripts
-sudo chown -R netmiko:netmiko /home/netmiko/
+mkdir -p /home/youruser/docker/syncthing
+mkdir -p /home/youruser/Backups
+mkdir -p /home/youruser/scripts
+sudo chown -R youruser:youruser /home/youruser/
 ```
 
 ### 3.2. Infrastructure Definition (Docker)
 
-File `docker-compose.yml` created in `/home/netmiko/docker/syncthing/`.
+File `docker-compose.yml` created in `/home/youruser/docker/syncthing/`.
 
 ```yaml
 services:
@@ -93,7 +90,7 @@ services:
       - TZ=Europe/Madrid
     volumes:
       - ./config:/config
-      - /home/netmiko/Backups:/data1
+      - /home/youruser/Backups:/data1
     ports:
       - 8384:8384
       - 22000:22000/tcp
@@ -107,20 +104,20 @@ services:
 Command to raise the container:
 
 ```bash
-cd /home/netmiko/docker/syncthing
+cd /home/youruser/docker/syncthing
 docker compose up -d
 ```
 
 ### 3.4. Visual Validation
 
-- **Action:** Enter `http://192.168.1.X:8384` from the browser. X = the IP number of your Rpi.
+- **Action:** Enter `http://<RPI -IP>` from the browser. X = the IP number of your Rpi.
 - **Result:** Syncthing web interface loaded correctly.
 
 ![Syncthing Web UI](assets/image1.png)
 
 Ok, now we are in the Raspberry pi via web in the browser
 
-Do this **right now** on that Raspberry screen (`192.168.1.X:8384`):
+Do this **right now** on that Raspberry screen (`<RPI -IP>`):
 
 1. Go to top right: **Actions** button > **Show ID**.
 2. You will get a QR code and below a long code of letters and numbers.
@@ -144,7 +141,7 @@ Do this **right now** on that Raspberry screen (`192.168.1.X:8384`):
 
 ### Step 4.2: Accept the connection on the Server
 
-1. Go back to the browser where you have the Raspberry Pi (`192.168.1.X:8384`).
+1. Go back to the browser where you have the Raspberry Pi (`<RPI -IP>`).
 2. Wait a few seconds. A yellow notice will appear at the top saying: **"New Device XXXXX wants to connect"**.
 
 ![Accept Device](assets/image4.png)
@@ -183,7 +180,7 @@ The server receives the pairing request. It is necessary to manually approve it 
 
 This is the most important technical step.
 
-1. Go back to the Raspberry Pi browser (`192.168.1.x:8384`).
+1. Go back to the Raspberry Pi browser (`<RPI -IP>`).
 2. You will see another yellow notice at the top: **"PC Windows wants to share folder 'xxxxxxxxx"**.
 3. Click **Add**.
 
@@ -216,7 +213,7 @@ To connect the Pi to Google, you need to generate a "permit" (token) from your W
 
 ### Step 5.1: Create the connection (SSH on the Pi)
 
-Go back to your Raspberry Pi terminal (`ssh netmiko@...`).
+Go back to your Raspberry Pi terminal (`ssh youruser@...`).
 
 1. Run: `rclone config`
 2. Write `n` (New remote) > Enter.
@@ -257,7 +254,7 @@ Do not exit the `rclone config` menu. Now we are going to create the security la
 1. Write `n` (New remote).
 2. **Name:** `gcrypt`
 3. **Storage:** Write `crypt`.
-4. **Remote:** `gdrive:/Backups_Cifrados` *(This will create that folder in your Drive).*
+4. **Remote:** `gdrive:/Backupyourfolder` *(This will create that folder in your Drive).*
 5. **Filename Encryption:** `1` (Standard).
 6. **Directory Name Encryption:** `1` (True).
 7. **Password:** `y` (Yes).
@@ -274,7 +271,7 @@ Do not exit the `rclone config` menu. Now we are going to create the security la
 1. Create a test file on the Pi: `touch secret_test.txt`
 2. Upload it: `rclone copy secret_test.txt gcrypt:/`
 3. If no error, go to your Google Drive in the PC browser.
-4. Find the folder `Backups_Cifrados`.
+4. Find the folder `Backupyourfolder`.
 
 > Verification of 'Zero Knowledge': The uploaded file appears in Google Drive with the name and content encrypted.
 > 
@@ -290,7 +287,7 @@ In your Raspberry Pi terminal (`ssh`):
 
 6.1.1. Create/Open the file:
 
-`nano /home/netmiko/scripts/upload_cloud.sh`
+`nano /home/youruser/scripts/upload_cloud.sh`
 
 **6.1.2. Copy and paste** this exact code (it is the improved version with activity log):
 
@@ -299,9 +296,9 @@ In your Raspberry Pi terminal (`ssh`):
 # Sovereign Vault - Script de Backup Automático
 
 # CONFIGURACIÓN
-ORIGEN="/home/netmiko/Backups"
+ORIGEN="/home/youruser/Backups"
 DESTINO="gcrypt:/"
-LOGFILE="/home/netmiko/scripts/upload.log"
+LOGFILE="/home/youruser/scripts/upload.log"
 
 echo "------------------------------------------------" >> $LOGFILE
 echo "INICIO BACKUP: $(date)" >> $LOGFILE
@@ -390,9 +387,9 @@ I'll be happy to answer any suggestions or comments!
 > ⚠️ IMPORTANT NOTE ON USERNAMES
 > 
 > 
-> In the following examples, you will see the username **`netmiko`**. This is the specific user for my home lab.
+> In the following examples, you will see the username **`youruser`**. This is the specific user for my home lab.
 > 
-> When running these commands on your own system, you **MUST replace `netmiko`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
+> When running these commands on your own system, you **MUST replace `youruser`** with your actual Linux username (e.g., `ubuntu`, `pi`, `john`, etc.).
 > To find out your current username, type `whoami` in the terminal.
 > 
 
@@ -424,8 +421,8 @@ Bash
 sudo mkdir -p /mnt/vault_mount
 
 # 2. Give ownership to your user (CRITICAL STEP)
-# Replace 'netmiko' with YOUR username
-sudo chown netmiko:netmiko /mnt/vault_mount
+# Replace 'youruser' with YOUR username
+sudo chown youruser:youruser /mnt/vault_mount
 ```
 
 ---
@@ -519,6 +516,6 @@ This project relies on fantastic Open Source software. Special thanks to the cre
 
 **José Álvarez** *| Microcomputer Systems & Networks Technician | Network Automation*
 
-* 📧 [contacto@netmiko.io](mailto:contacto@netmiko.io)
+* 📧 [contacto@youruser.io](mailto:contacto@youruser.io)
 * 💼 [LinkedIn Profile](https://www.linkedin.com/in/jadomin/)
 * 🐙 [GitHub Profile](https://github.com/JAlvarez-NetDev)
