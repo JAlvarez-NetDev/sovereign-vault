@@ -2,14 +2,14 @@ services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
-    hostname: userver-sync
+    hostname: syncthing-server
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Madrid
     volumes:
       - ./config:/config
-      - /home/netmiko/Backups:/data1
+      - ${BACKUP_PATH}:/data1
     ports:
       - 8384:8384
       - 22000:22000/tcp
