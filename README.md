@@ -518,4 +518,4 @@ This project relies on fantastic Open Source software. Special thanks to the cre
 
 * 📧 [contacto](mailto:manager@alvarezops.tech)
 * 💼 [LinkedIn Profile](https://www.linkedin.com/in/jadomin/)
-* 🐙 [GitHub Profile](https://github.com/JAlvarez-NetDev)
+* 🐙 [GitHub Profile](https://github.com/alvarezops)
